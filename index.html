@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111513">
+  <title>The Deck of Many Sounds</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="desktop.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-icon" aria-hidden="true">◖)))</span><span>THE DECK OF MANY SOUNDS</span></div>
+      <div class="sidebar-intro">Your music and moments,<br>in one place.</div>
+      <nav aria-label="Sections">
+        <a href="#deck" class="nav-link active"><span aria-hidden="true">▦</span> The Deck of Many Sounds</a>
+        <a href="#spotify" class="nav-link"><span aria-hidden="true">♫</span> Spotify</a>
+        <a href="#clips" class="nav-link"><span aria-hidden="true">▦</span> Sound clips</a>
+        <a href="#mixer" class="nav-link"><span aria-hidden="true">≋</span> Live mixer</a>
+      </nav>
+        <div class="sidebar-bottom"><span class="status-dot"></span> <span id="save-status">Loading saved sounds…</span><br><small>Spotify controls its desktop app.</small></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div class="eyebrow">YOUR PERSONAL AUDIO DESK</div>
+        <div class="topbar-right"><span class="topbar-pill">LOCAL SOUND EFFECTS + SPOTIFY</span></div>
+      </header>
+
+      <div class="content">
+        <section id="deck" class="deck-section">
+          <div class="deck-heading">
+            <div><div class="section-kicker">YOUR SESSION CONTROL PANEL</div><h1>The Deck of Many Sounds</h1><p>One press to change the scene. Assign music or sound effects to any of the 16 pads.</p></div>
+            <div class="deck-toolbar"><button id="deck-pause-music" class="button ghost" type="button" disabled>Ⅱ Pause music</button><button id="deck-stop-local" class="button ghost" type="button" disabled>■ Stop sounds</button></div>
+          </div>
+          <div class="deck-frame"><div class="deck-frame-top"><span><span class="pulse-dot"></span> SESSION READY</span><span>4 × 4 QUICK ACCESS</span></div><div id="deck-grid" class="deck-grid" aria-label="Soundboard pads"></div></div>
+          <p id="deck-error" class="form-error" role="alert" hidden></p>
+          <div class="deck-hint"><span>TIP</span> Press an empty pad to assign it. To repeat a sound effect, use its edit control and select “Loop this sound.” Press the pad again to stop it.</div>
+        </section>
+
+        <section id="spotify" class="section">
+          <div class="section-heading"><div><div class="section-kicker">01 / MUSIC</div><h2>Spotify desktop</h2><p>Save a playlist or song link, then play it in your installed Spotify app.</p></div><div class="section-count" id="spotify-count">0 saved</div></div>
+          <form id="spotify-form" class="add-panel">
+            <div class="field wide"><label for="spotify-url">SPOTIFY LINK</label><input id="spotify-url" type="text" placeholder="Paste a playlist or song link" autocomplete="off" required></div>
+            <div class="field"><label for="spotify-name">NAME <span class="optional">OPTIONAL</span></label><input id="spotify-name" type="text" placeholder="Give it a name" maxlength="80"></div>
+            <button class="button primary" type="submit">+ Add Spotify</button>
+          </form>
+          <p id="spotify-error" class="form-error" role="alert" hidden></p>
+          <div class="spotify-layout">
+            <div id="spotify-list" class="saved-list" aria-label="Saved Spotify links"></div>
+            <div class="player-panel">
+              <div class="panel-topline"><span class="panel-label">DESKTOP PLAYER</span><span id="spotify-indicator" class="live-indicator disconnected"><span class="status-dot"></span> SPOTIFY</span></div>
+              <div class="desktop-player"><div class="desktop-icon">♫</div><div class="desktop-copy"><span id="spotify-connection">Checking Spotify…</span><strong id="spotify-track">Nothing playing</strong><span id="spotify-artist">Choose a saved link to start.</span></div></div>
+              <div class="transport"><button id="spotify-prev" type="button" aria-label="Previous track" title="Previous track">⏮</button><button id="spotify-toggle" class="transport-main" type="button" aria-label="Play or pause" title="Play or pause">▶</button><button id="spotify-next" type="button" aria-label="Next track" title="Next track">⏭</button></div>
+              <p id="spotify-player-note" class="player-note">Keep the Spotify desktop app open for transport controls.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="clips" class="section clips-section">
+          <div class="section-heading"><div><div class="section-kicker">02 / SOUND EFFECTS</div><h2>Your sound clips</h2><p>Tap any clip to play it. Tap again to layer another copy. Set each clip’s volume below.</p></div><div class="section-count" id="clip-count">0 clips</div></div>
+          <div class="upload-panel" id="drop-zone">
+            <div class="upload-mark">＋</div><div><strong>Drop audio files here</strong><span>or choose files from your computer</span></div>
+            <button class="button secondary" id="choose-files" type="button">Choose files</button>
+            <input id="file-input" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac,.webm" multiple hidden>
+          </div>
+          <p id="file-error" class="form-error" role="alert" hidden></p>
+          <div id="clip-grid" class="clip-grid"></div>
+        </section>
+
+        <section id="mixer" class="section mixer-section">
+          <div class="section-heading"><div><div class="section-kicker">03 / LIVE MIXER</div><h2>Playing now</h2><p>Manage local sounds independently while Spotify keeps playing.</p></div><button id="stop-all" class="button ghost" type="button" disabled>■ Stop all clips</button></div>
+          <div class="mixer-panel"><div class="mixer-head"><span>LOCAL AUDIO</span><span id="active-count">0 ACTIVE</span></div><div id="active-list" class="active-list"><div class="empty-active">No local clips playing. Your next sound is one tap away.</div></div></div>
+        </section>
+        <footer>The Deck of Many Sounds · Your links, pads, and audio files are saved in this computer’s Soundboard data folder. Desktop controls run through the local server.</footer>
+      </div>
+    </main>
+  </div>
+  <dialog id="pad-dialog" class="pad-dialog" aria-labelledby="pad-dialog-title">
+    <form id="pad-form" method="dialog">
+      <div class="dialog-top"><div><div class="section-kicker">CUSTOMIZE YOUR DECK</div><h2 id="pad-dialog-title">Set up pad</h2></div><button id="pad-close" class="dialog-close" type="button" aria-label="Close">×</button></div>
+      <label class="dialog-label" for="pad-source">PLAY THIS</label>
+      <select id="pad-source" required></select>
+      <p id="pad-no-sources" class="dialog-help" hidden>Add a Spotify link or local audio file below, then return to this pad.</p>
+      <label class="dialog-label" for="pad-label">BUTTON LABEL</label>
+      <input id="pad-label" type="text" maxlength="40" placeholder="For example: Battle music">
+      <label class="loop-option" id="pad-loop-wrap"><input id="pad-loop" type="checkbox"><span><strong>Loop this sound</strong><small>Press the pad again to stop its loop.</small></span></label>
+      <div class="dialog-actions"><button id="pad-clear" class="button ghost" type="button">Clear pad</button><div><button id="pad-cancel" class="button ghost" type="button">Cancel</button><button id="pad-save" class="button primary" type="submit">Save pad</button></div></div>
+    </form>
+  </dialog>
+</body>
+</html>
